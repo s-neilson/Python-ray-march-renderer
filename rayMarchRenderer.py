@@ -64,10 +64,10 @@ def getUnitVectorPointToPoint(toVector,fromVector):
 #pixelX,pixelY. The camera is assumed to be a pinhole comera with an infinitely small aperture.
 def getCameraRayUnitVector(pixelX,pixelY,imageWidth,imageHeight,cameraLocation,aspectRatio,screenDistance):
     screenZ=screenDistance+cameraLocation.z
-    screenX=numpy.interp(x=pixelX,xp=[0,imageWidth],fp=[-0.5*aspectRatio,0.5*aspectRatio]) #Maps pixel x ordinate to screen x ordinate.
-    screenY=numpy.interp(x=pixelY,xp=[0,imageHeight],fp=[-0.5,0.5]) #Maps pixel y ordinate to screen y ordinate.
+    screenX=cameraLocation.x+numpy.interp(x=pixelX,xp=[0,imageWidth],fp=[-0.5*aspectRatio,0.5*aspectRatio]) #Maps pixel x ordinate to screen x ordinate.
+    screenY=cameraLocation.y+numpy.interp(x=pixelY,xp=[0,imageHeight],fp=[-0.5,0.5]) #Maps pixel y ordinate to screen y ordinate.
     
-    pixelLocation=Vector3D(screenX,screenY,screenZ)   
+    pixelLocation=Vector3D(float(screenX),float(screenY),float(screenZ))  
     return getUnitVectorPointToPoint(pixelLocation,cameraLocation)
 
 
@@ -309,7 +309,7 @@ def marchRay(currentRecursiveDepth,objectList,originObject,rayOrigin,rayDirectio
 
     
 aspectRatio=1.0
-imageHeight=100
+imageHeight=50
 imageWidth=int(aspectRatio*imageHeight)
 fieldOfView=math.pi/2.0
 cameraLocation=Vector3D(0.0,0.0,0.0)
